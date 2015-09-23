@@ -1,0 +1,58 @@
+#headline{
+	font-family:courier new;
+	font-weight:bold;
+	background:gold;
+	border-radius:10px;
+	border: 2px solid darkgoldenrod;
+	width:445px;
+	margin-left: 230px;
+
+}
+#maleCanvas{
+	cursor:default;
+	margin-top: -10px;
+	background:lemonchiffon;
+	border-style: dashed;
+	border: 5px dashed gold;
+	border-radius:50px;
+			}
+#maleCanvas:active{
+	cursor:pointer;
+}
+#options-table{
+	background: gold;
+	font-family:courier new;
+	border-radius:10px;
+	border: 2px solid darkgoldenrod;
+	margin-top:5px;
+	
+
+}
+#strokeWidth{
+	background:darkgoldenrod;
+	border-radius:5px;
+	border: 1px solid darkgoldenrod;
+}
+
+#strokeWidth:focus{
+	background:yellow;
+}
+
+#objectColor{
+	background:khaki;
+	border: 1px solid darkgoldenrod;
+	border-radius: 3px;
+}
+
+#drag{
+	background: gold;
+	font-family:courier new;
+	border-radius:10px;
+	border: 2px solid darkgoldenrod;
+}
+#drag2{
+	background: gold;
+	font-family:courier new;
+	border-radius:10px;
+	border: 2px solid darkgoldenrod;
+}

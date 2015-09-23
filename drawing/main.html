@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	</head>
+	<body>
+
+	<title>HTML5 | Javascript | CSS showcase</title>
+		<h1 id="headline">Drawing on HTML5 canvas</h1>
+		
+		<canvas id="maleCanvas" width="900" height="300">Your browser doesn't support HTML5 canvas!</canvas>
+		<div id="options">
+			<table id="options-table">
+				<tr>
+					<td>color chooser:</td>
+					<td>
+						<input id="objectColor" type="color"></input>
+					</td>
+					<td>stroke width:</td>
+					<td>
+						<input id="strokeWidth" type="number" value="2"></input>
+					</td>
+					<td><input id="drag" type="submit" value="create draggable element" onclick="paint2()"></td>
+					<td><input id="drag2" type="submit" value="delete draggable element" onclick="deleteImg()"></td>
+				</tr>
+		</div>
+		
+		<script type="text/javascript">
+			var canvas=document.getElementById("maleCanvas");
+			var context=canvas.getContext("2d");
+			var active = false; //mousebutton pressed = true
+			var begin = false;  //true = begin a drawing path
+			var isDragging = false;
+			var x, y, firstX, firstY, imgPosX,imgPosY;
+			var img;
+			
+			//event-handling
+			canvas.onmousemove = function(event){
+				x = parseInt(event.clientX-canvas.offsetLeft); //event.layerX; <--works not in Firefox
+				y = parseInt(event.clientY-canvas.offsetTop); //event.layerY;  <--works not in Firefox
+				//console.log(x + ".." + y);
+				if(img && isDragging){
+					active=false;
+					context.clearRect(0,0,canvas.width,canvas.height);
+					context.drawImage(img,x-50,y-50);
+				}
+				if(active){
+					paint();
+				}
+			}
+			
+			canvas.onmousedown = function(event){
+				firstX = parseInt(event.clientX-canvas.offsetLeft); 
+				firstY = parseInt(event.clientY-canvas.offsetTop);
+				active = true;
+				begin = true;
+				//checks wheter the cursor hits the img --->buggy
+				//console.log(img && firstX <= imgPosX+50 && firstX >= imgPosX-50 && firstY <= imgPosY+50 && firstY >= imgPosY-50);
+				if(img && x <= imgPosX+100 && x >= imgPosX-50 && y <= imgPosY+100 && y >= imgPosY-50){isDragging=true;}
+			}
+			
+			canvas.onmouseup = function(){
+				active = false;
+				if(img && isDragging){
+					imgPosX=parseInt(event.clientX-canvas.offsetLeft);
+					imgPosY=parseInt(event.clientY-canvas.offsetTop);
+					isDragging=false;
+				}
+			}
+			canvas.onmouseout = function(event){
+				active=false;
+				if(img){
+					isDragging=false;
+					imgPosX=parseInt(event.clientX-canvas.offsetLeft);
+					imgPosY=parseInt(event.clientY-canvas.offsetTop);
+				}
+			}
+			//draw paths onto canvas
+			function paint(){
+				if(begin){
+					context.beginPath();
+					context.lineWidth = document.getElementById("strokeWidth").value;
+					context.strokeStyle = document.getElementById("objectColor").value;
+					context.moveTo(firstX,firstY);
+					begin = false;
+				}
+				context.lineTo(x,y);
+				context.stroke();
+			}
+			
+			//draws an image onto the middle of the canvas
+			function paint2(){
+				img=new Image();
+				img.id="pic";
+				img.src="http://ecx.images-amazon.com/images/I/51srsYBXH9L._SL500_SS100_.jpg";
+				//console.log(img);
+				imgPosX=canvas.width/2-50;
+				imgPosY=canvas.height/2-50;
+				context.drawImage(img,imgPosX,imgPosY,100,100);
+			}
+			//removes all drawings and images from the canvas
+			function deleteImg(){
+				context.clearRect(0,0,canvas.width,canvas.height);
+				img=undefined;
+				imgPosX=undefined;
+				imgPosY=undefined;
+			}
+		</script>
+	</body>	
+</html>
